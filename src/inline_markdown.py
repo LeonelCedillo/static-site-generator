@@ -9,9 +9,9 @@ def split_nodes_delimiter(old_nodes, delimiter, text_type):
         if node.text_type != TextType.TEXT:
             new_nodes.append(node)
             continue
-        if node.text.count(delimiter) < 2:
-            raise Exception("Invalid Markdown syntax")
         splitted_text = node.text.split(delimiter)
+        if len(splitted_text) % 2 == 0:
+            raise ValueError("invalid markdown, formatted section not closed")
         for i in range(len(splitted_text)):
             if splitted_text[i] != "":
                 if i % 2 == 0:
@@ -83,3 +83,15 @@ def split_nodes_link(old_nodes):
         if node_text != "":
             new_nodes.append(TextNode(node_text, TextType.TEXT))
     return new_nodes
+
+
+def text_to_textnodes(text):
+    nodes = [TextNode(text, TextType.TEXT)]
+    nodes = split_nodes_delimiter(nodes, "**", TextType.BOLD)
+    nodes = split_nodes_delimiter(nodes, "_", TextType.ITALIC)
+    nodes = split_nodes_delimiter(nodes, "`", TextType.CODE)
+    nodes = split_nodes_image(nodes)
+    nodes = split_nodes_link(nodes)
+    return nodes
+
+
