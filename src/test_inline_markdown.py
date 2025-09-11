@@ -110,7 +110,7 @@ class TestInlineMarkdown(unittest.TestCase):
             matches,
         )
 
-    #################################################################################
+    ###############################################################################################
 
     def test_split_image(self):
         node = TextNode(
@@ -174,6 +174,9 @@ class TestInlineMarkdown(unittest.TestCase):
             new_nodes,
         )
 
+    ###############################################################################################
+
+
     def test_text_to_textnodes(self):
         text = "This is **text** with an _italic_ word and a `code block` and an ![obi wan image](https://i.imgur.com/fJRm4Vk.jpeg) and a [link](https://boot.dev)"
         nodes = text_to_textnodes(text)
@@ -193,7 +196,7 @@ class TestInlineMarkdown(unittest.TestCase):
             nodes,
         )
 
-
+    
 
 
 if __name__ == "__main__":
