@@ -20,17 +20,8 @@ def generate_page(from_path, template_path, dest_path, basepath):
     html = parent_node.to_html()
     title = extract_title(markdown)
     final_html = template.replace("{{ Title }}", title).replace("{{ Content }}", html)  
-    
-    # Use absolute paths with correct basepath
-    if basepath != "/":
-        # Ensure basepath starts with / and ends with /
-        if not basepath.startswith('/'):
-            basepath = '/' + basepath
-        if not basepath.endswith('/'):
-            basepath = basepath + '/'
-        
-        final_html = final_html.replace('href="/', 'href="' + basepath)
-        final_html = final_html.replace('src="/', 'src="' + basepath)
+    final_html = final_html.replace('href="/', 'href="' + basepath)
+    final_html = final_html.replace('src="/', 'src="' + basepath)
         
     dest_dir_path = os.path.dirname(dest_path)
     if dest_dir_path != "":
@@ -45,15 +36,10 @@ def generate_pages_recursive(dir_path_content, template_path, dest_dir_path, bas
         from_path = os.path.join(dir_path_content, filename)
         dest_path = os.path.join(dest_dir_path, filename)
         if os.path.isfile(from_path) and from_path.endswith(".md"):
-            # For clean URLs, create directory structure with index.html
-            base_name = Path(filename).stem  # Get filename without extension
-            if base_name == "index":
-                # If it's already index.md, just convert to index.html
-                dest_path = str(Path(dest_path).with_suffix(".html"))
-            else:
-                # Create a directory and put index.html inside
-                dest_path = os.path.join(dest_dir_path, base_name, "index.html")
-            
+            dest_path = Path(dest_path).with_suffix(".html")
             generate_page(from_path, template_path, dest_path, basepath)
         elif os.path.isdir(from_path):
             generate_pages_recursive(from_path, template_path, dest_path, basepath)
+
+
+
