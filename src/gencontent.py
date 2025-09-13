@@ -20,8 +20,7 @@ def generate_page(from_path, template_path, dest_path, basepath):
     html = parent_node.to_html()
     title = extract_title(markdown)
     final_html = template.replace("{{ Title }}", title).replace("{{ Content }}", html)  
-    final_html = final_html.replace('href="/', f'href="{basepath}').replace('src="/', f'src="{basepath}')
-
+    final_html = final_html.replace('href="/', 'href="' + basepath).replace('src="/', 'src="' + basepath)
 
     dest_dir_path = os.path.dirname(dest_path)
     if dest_dir_path != "":
